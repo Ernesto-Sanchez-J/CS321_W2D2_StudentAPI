@@ -31,7 +31,12 @@ namespace CS321_W2D2_StudentAPI.Services
         };
         // keep track of next id number
         private int _nextId = 3;
+        public Student Get(int id)
+        {
+            var student = _students.FirstOrDefault(s => s.Id == id);
 
+            return student;
+        }
         public Student Add(Student student)
         {
             ValidateBirthDate(student);
@@ -40,6 +45,8 @@ namespace CS321_W2D2_StudentAPI.Services
             // store in the list of students
             _students.Add(student);
             // return the new Student with Id filled in
+            ValidateBirthDate(student);
+
             return student;
         }
 
@@ -55,30 +62,30 @@ namespace CS321_W2D2_StudentAPI.Services
             }
         }
 
-        public Student Get(int id)
-        {
-            // return the specified Student or null if not found
-        }
-
+    
         public IEnumerable<Student> GetAll()
         {
-            // return all students
+            return _students;
         }
 
         public Student Update(Student updatedStudent)
         {
-            // get the Student object in the current list with this id 
+            var currentStudent = this.Get(updatedStudent.Id);
 
-            // return null if item to update isn't found
+            if (currentStudent == null) return null;
 
-            // copy the property values from the updated student into the current student object
+            currentStudent.FirstName = updatedStudent.FirstName;
+            currentStudent.LastName = updatedStudent.LastName;
+            currentStudent.BirthDate = updatedStudent.BirthDate;
+            currentStudent.Email = updatedStudent.Email;
+            currentStudent.Phone = updatedStudent.Phone;
 
-            // return student
+            return currentStudent;
         }
 
         public void Remove(Student student)
         {
-            // remove student
+            _students.Remove(student);
         }
     }
 }
